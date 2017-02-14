@@ -17,11 +17,11 @@ soup = BeautifulSoup(r.text,'html.parser')
 
 for story_heading in soup.find_all(class_="story-heading")[:10]:
     if story_heading.a:
-        pass
-        #print(story_heading.a.text.replace("\n", " ").strip())
+
+        print(story_heading.a.text.replace("\n", " ").strip())
     else:
-        pass
-        #print(story_heading.contents[0].strip())
+
+        print(story_heading.contents[0].strip())
 #### Problem 2 ####
 print('\n*********** PROBLEM 2 ***********')
 print('Michigan Daily -- MOST READ\n')
