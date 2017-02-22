@@ -63,29 +63,25 @@ lst = [0,1,2,3,4,5]
 new_email = []
 
 for number in lst:
+    url = 'https://www.si.umich.edu/directory?field_person_firstname_value=&field_person_lastname_value=&rid=4&page='+ str(number)
+    email_request = requests.get(url, headers={'User-Agent':'SI_CLASS'})
+    email_soup = BeautifulSoup(email_request.text, 'html.parser')
+    emails = []
+    links = email_soup.find_all('div',{'class' : 'field-item even'})
+    for link in links:
+        link_find = link.find('a')
+        try:
+            if 'node' in link_find.get('href'):
+                emails.append(link_find.get('href'))
+        except:
+            pass
 
-	url = 'https://www.si.umich.edu/directory?field_person_firstname_value=&field_person_lastname_value=&rid=4&page='+ str(number)
-	email_request = requests.get(url)
-	email_soup = BeautifulSoup(email_request.text, 'html.parser')
-
-	emails = []
-	links = email_soup.find_all('div',{'class' : 'field-item even'})
-	for link in links:
-		link_find = link.find('a')
-		try:
-			if 'node' in link_find.get('href'):
-			 	emails.append(link_find.get('href'))
-
-		except:
-			pass
-
-	for email in emails:
-		url2 = 'https://www.si.umich.edu' + email
-		email_request1 = requests.get(url2)
-		email_soup1 = BeautifulSoup(email_request1.text, 'html.parser')
-
-		for x in email_soup1.find_all('a'):
-			f = x.get('href')
-			if 'mail' in f:
-			 	new_email.append(abc[7:])
-			 	print(str(len(new_email)) + ' ' + abc[7:])
+    for email in emails:
+        url2 = 'https://www.si.umich.edu' + email
+        email_request1 = requests.get(url2, headers={'User-Agent':'SI_CLASS'})
+        email_soup1 = BeautifulSoup(email_request1.text, 'html.parser')
+        for x in email_soup1.find_all('a'):
+            f = x.get('href')
+            if 'mail' in f:
+                new_email.append(f[7:])
+                print(str(len(new_email)) + ' ' + f[7:])
